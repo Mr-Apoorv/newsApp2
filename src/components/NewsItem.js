@@ -7,15 +7,14 @@ export class NewsItem extends Component {
     return (
       <div>
         <div className="card" style={{ width: "18rem" }}>
-          <img
-            src="https://images.moneycontrol.com/static-mcnews/2022/06/Stocks-770x433.jpg"
-            className="card-img-top"
-            alt="..."
-          />
+          <img src={this.props.imageUrl} className="card-img-top" alt="..." />
           <div className="card-body">
             <h5 className="card-title">{this.props.title}</h5>
             <p className="card-text">{desc}.</p>
-            <a href="/newsDetails" className="btn btn-primary">
+            <a
+              href={`/newsDetails/${this.props.articleUrl}`}
+              className="btn btn-primary btn-sm"
+            >
               Read more
             </a>
           </div>
