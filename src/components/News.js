@@ -283,6 +283,18 @@ export class News extends Component {
       loader: false,
     };
   }
+
+  async componentDidMount() {
+    console.log(`component did mount`);
+    let url =
+      "https://newsapi.org/v2/top-headlines?country=in&apiKey=78b4044bed5544fcbc1d33c5a0ff96fb";
+
+    let data = await fetch(url);
+    let parsedData = await data.json();
+    console.log(parsedData);
+    this.setState({ articles: parsedData.articles });
+  }
+
   render() {
     console.log(`Render from news component`);
 
@@ -290,20 +302,18 @@ export class News extends Component {
       <div className="container my-3">
         <h2 className="text-center">News Monkey App 🐒</h2>
         <div className="row my-3">
-          <div className="col-md-4">
-            <NewsItem
-              title="mytitle"
-              desc="mydesc"
-              imageUrl="https://i-invdn-com.investing.com/news/SP500StandardandPoors500Index_800x533_L_1657544297.jpg"
-              articleUrl="https://www.investing.com/news/stock-market-news/futures-fall-on-rate-hike-worries-2894688"
-            />
-          </div>
-          <div className="col-md-4">
-            <NewsItem title="mytitle" desc="mydesc" />
-          </div>
-          <div className="col-md-4">
-            <NewsItem title="mytitle" desc="mydesc" />
-          </div>
+          {this.state.articles.map((element) => {
+            return (
+              <div className="col-md-4" key={element.url}>
+                <NewsItem
+                  title={element.title}
+                  desc={element.description}
+                  imageUrl={element.urlToImage}
+                  articleUrl={element.url}
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
     );
