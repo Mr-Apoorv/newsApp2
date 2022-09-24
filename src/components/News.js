@@ -281,19 +281,66 @@ export class News extends Component {
     this.state = {
       articles: this.articles,
       loader: false,
+      page: 1,
+      totalResults: 0,
+      pageSize: 20,
     };
   }
 
   async componentDidMount() {
     console.log(`component did mount`);
-    let url =
-      "https://newsapi.org/v2/top-headlines?country=in&apiKey=78b4044bed5544fcbc1d33c5a0ff96fb";
+    let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=78b4044bed5544fcbc1d33c5a0ff96fb&page=${this.state.page}&pageSize=${this.state.pageSize}`;
 
     let data = await fetch(url);
     let parsedData = await data.json();
     console.log(parsedData);
-    this.setState({ articles: parsedData.articles });
+    this.setState({
+      articles: parsedData.articles,
+      totalResults: parsedData.totalResults,
+    });
   }
+
+  prevClickHandler = async () => {
+    console.log(`Previous clicked`);
+    let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=78b4044bed5544fcbc1d33c5a0ff96fb&page=${
+      this.state.page - 1
+    }&pageSize=${this.state.pageSize}`;
+
+    let data = await fetch(url);
+    let parsedData = await data.json();
+    console.log(parsedData);
+    this.setState({ articles: parsedData.articles, page: this.state.page - 1 });
+  };
+
+  nextClickHandler = async (event) => {
+    console.log(`Next clicked`);
+    if (
+      this.state.page + 1 >
+      Math.ceil(this.state.totalResults / this.state.pageSize)
+    ) {
+      console.log(`last page`);
+      event.target.classList.add("disabled");
+    } else {
+      let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=78b4044bed5544fcbc1d33c5a0ff96fb&page=${
+        this.state.page + 1
+      }&pageSize=${this.state.pageSize}`;
+
+      let data = await fetch(url);
+      let parsedData = await data.json();
+      console.log(parsedData);
+      this.setState({
+        articles: parsedData.articles,
+        page: this.state.page + 1,
+      });
+      if (
+        this.state.page + 1 ===
+        Math.ceil(this.state.totalResults / this.state.pageSize)
+      ) {
+        console.log(`last page`);
+        event.target.classList.add("disabled");
+      }
+    }
+  };
 
   render() {
     console.log(`Render from news component`);
@@ -314,6 +361,23 @@ export class News extends Component {
               </div>
             );
           })}
+        </div>
+        <div className="container d-flex justify-content-between">
+          <button
+            type="button"
+            className="btn btn-dark"
+            disabled={this.state.page === 1}
+            onClick={this.prevClickHandler}
+          >
+            Prev
+          </button>
+          <button
+            type="button"
+            className="btn btn-dark"
+            onClick={(event) => this.nextClickHandler(event)}
+          >
+            Next
+          </button>
         </div>
       </div>
     );
