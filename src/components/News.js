@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import NewsItem from "./NewsItem";
+import Loader from "./Loader";
 
 export class News extends Component {
   articles = [
@@ -275,28 +276,29 @@ export class News extends Component {
         "The United Arab Emirates will launch its first lunar rover in November, the mission manager said Monday.Hamad Al Marzooqi told The National, a state-linked newspaper, that the Rashid rover, named for… [+1479 chars]",
     },
   ];
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     console.log(`Constructor from news component`);
     this.state = {
       articles: this.articles,
       loader: false,
       page: 1,
       totalResults: 0,
-      pageSize: 20,
+      pageSize: this.props.postPerPage,
     };
   }
 
   async componentDidMount() {
     console.log(`component did mount`);
     let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=78b4044bed5544fcbc1d33c5a0ff96fb&page=${this.state.page}&pageSize=${this.state.pageSize}`;
-
+    this.setState({ loader: true });
     let data = await fetch(url);
     let parsedData = await data.json();
     console.log(parsedData);
     this.setState({
       articles: parsedData.articles,
       totalResults: parsedData.totalResults,
+      loader: false,
     });
   }
 
@@ -305,11 +307,15 @@ export class News extends Component {
     let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=78b4044bed5544fcbc1d33c5a0ff96fb&page=${
       this.state.page - 1
     }&pageSize=${this.state.pageSize}`;
-
+    this.setState({ loader: true });
     let data = await fetch(url);
     let parsedData = await data.json();
     console.log(parsedData);
-    this.setState({ articles: parsedData.articles, page: this.state.page - 1 });
+    this.setState({
+      articles: parsedData.articles,
+      page: this.state.page - 1,
+      loader: false,
+    });
   };
 
   nextClickHandler = async (event) => {
@@ -324,13 +330,14 @@ export class News extends Component {
       let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=78b4044bed5544fcbc1d33c5a0ff96fb&page=${
         this.state.page + 1
       }&pageSize=${this.state.pageSize}`;
-
+      this.setState({ loader: true });
       let data = await fetch(url);
       let parsedData = await data.json();
       console.log(parsedData);
       this.setState({
         articles: parsedData.articles,
         page: this.state.page + 1,
+        loader: false,
       });
       if (
         this.state.page + 1 ===
@@ -348,19 +355,21 @@ export class News extends Component {
     return (
       <div className="container my-3">
         <h2 className="text-center">News Monkey App 🐒</h2>
+        {this.state.loader && <Loader></Loader>}
         <div className="row my-3">
-          {this.state.articles.map((element) => {
-            return (
-              <div className="col-md-4" key={element.url}>
-                <NewsItem
-                  title={element.title}
-                  desc={element.description}
-                  imageUrl={element.urlToImage}
-                  articleUrl={element.url}
-                />
-              </div>
-            );
-          })}
+          {!this.state.loader &&
+            this.state.articles.map((element) => {
+              return (
+                <div className="col-md-4" key={element.url}>
+                  <NewsItem
+                    title={element.title}
+                    desc={element.description}
+                    imageUrl={element.urlToImage}
+                    articleUrl={element.url}
+                  />
+                </div>
+              );
+            })}
         </div>
         <div className="container d-flex justify-content-between">
           <button
