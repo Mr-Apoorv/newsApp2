@@ -2,11 +2,18 @@ import React, { Component } from "react";
 
 export class NewsItem extends Component {
   render() {
-    let { title, desc } = this.props;
+    let { title, desc, source } = this.props;
 
     return (
       <div>
-        <div className="card my-3" style={{ width: "18rem", height: "25rem" }}>
+        <div className="card my-3" style={{ width: "18rem", height: "30rem" }}>
+          <span
+            className="position-absolute top-0 translate-middle badge rounded-pill bg-danger"
+            style={{ left: "80%", zIndex: "1" }}
+          >
+            {" "}
+            {source}{" "}
+          </span>
           <img
             src={
               this.props.imageUrl
@@ -22,6 +29,12 @@ export class NewsItem extends Component {
               {this.props.title ? this.props.title.slice(0, 45) : ""}...
             </h5>
             <p className="card-text">{desc ? desc.slice(0, 88) : ""}...</p>
+            <p className="card-text">
+              <small className="text-muted">
+                By {!this.props.author ? "Unknown" : this.props.author} on{" "}
+                {new Date(this.props.date).toGMTString()}
+              </small>
+            </p>
             <a
               href={this.props.articleUrl}
               target="_blank"
