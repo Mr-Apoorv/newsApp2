@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import NewsItem from "./NewsItem";
 import Loader from "./Loader";
+import PropTypes from "prop-types";
 
 export class News extends Component {
   articles = [
@@ -276,6 +277,19 @@ export class News extends Component {
         "The United Arab Emirates will launch its first lunar rover in November, the mission manager said Monday.Hamad Al Marzooqi told The National, a state-linked newspaper, that the Rashid rover, named for… [+1479 chars]",
     },
   ];
+
+  static defaultProps = {
+    pageSize: 8,
+    country: "in",
+    category: "general",
+  };
+
+  static propTypes = {
+    pageSize: PropTypes.number,
+    country: PropTypes.string.isRequired,
+    category: PropTypes.string,
+  };
+
   constructor(props) {
     super(props);
     console.log(`Constructor from news component`);
@@ -290,7 +304,7 @@ export class News extends Component {
 
   async componentDidMount() {
     console.log(`component did mount`);
-    let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=78b4044bed5544fcbc1d33c5a0ff96fb&page=${this.state.page}&pageSize=${this.state.pageSize}`;
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=78b4044bed5544fcbc1d33c5a0ff96fb&page=${this.state.page}&pageSize=${this.state.pageSize}`;
     this.setState({ loader: true });
     let data = await fetch(url);
     let parsedData = await data.json();
@@ -304,7 +318,7 @@ export class News extends Component {
 
   prevClickHandler = async () => {
     console.log(`Previous clicked`);
-    let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=78b4044bed5544fcbc1d33c5a0ff96fb&page=${
+    let url = `https://newsapi.org/v2/top-headlines?country={this.props.country}&category={this.props.category}&apiKey=78b4044bed5544fcbc1d33c5a0ff96fb&page=${
       this.state.page - 1
     }&pageSize=${this.state.pageSize}`;
     this.setState({ loader: true });
@@ -327,7 +341,7 @@ export class News extends Component {
       console.log(`last page`);
       event.target.classList.add("disabled");
     } else {
-      let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=78b4044bed5544fcbc1d33c5a0ff96fb&page=${
+      let url = `https://newsapi.org/v2/top-headlines?country={this.props.country}&category={this.props.category}&apiKey=78b4044bed5544fcbc1d33c5a0ff96fb&page=${
         this.state.page + 1
       }&pageSize=${this.state.pageSize}`;
       this.setState({ loader: true });
