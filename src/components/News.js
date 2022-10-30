@@ -299,6 +299,7 @@ export class News extends Component {
       page: 1,
       totalResults: 0,
       pageSize: this.props.postPerPage,
+      // category: this.props.category,
     };
   }
 
@@ -315,6 +316,14 @@ export class News extends Component {
       loader: false,
     });
   }
+
+  // componentDidUpdate(prevProps) { //this will not work as only inside of news component is getting rerendered but we want complete news component to rerender
+  //   if (this.props.category !== prevProps.category) {
+  //     console.log("updated category");
+  //     this.setState({ category: this.props.category });
+  //     // window.location.reload();
+  //   }
+  // }
 
   prevClickHandler = async () => {
     console.log(`Previous clicked`);
