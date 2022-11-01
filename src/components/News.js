@@ -303,8 +303,7 @@ export class News extends Component {
     };
   }
 
-  async componentDidMount() {
-    console.log(`component did mount`);
+  async updateNews() {
     let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=78b4044bed5544fcbc1d33c5a0ff96fb&page=${this.state.page}&pageSize=${this.state.pageSize}`;
     this.setState({ loader: true });
     let data = await fetch(url);
@@ -317,6 +316,21 @@ export class News extends Component {
     });
   }
 
+  async componentDidMount() {
+    console.log(`component did mount`);
+    // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=78b4044bed5544fcbc1d33c5a0ff96fb&page=${this.state.page}&pageSize=${this.state.pageSize}`;
+    // this.setState({ loader: true });
+    // let data = await fetch(url);
+    // let parsedData = await data.json();
+    // console.log(parsedData);
+    // this.setState({
+    //   articles: parsedData.articles,
+    //   totalResults: parsedData.totalResults,
+    //   loader: false,
+    // });
+    this.updateNews();
+  }
+
   // componentDidUpdate(prevProps) { //this will not work as only inside of news component is getting rerendered but we want complete news component to rerender
   //   if (this.props.category !== prevProps.category) {
   //     console.log("updated category");
@@ -327,18 +341,20 @@ export class News extends Component {
 
   prevClickHandler = async () => {
     console.log(`Previous clicked`);
-    let url = `https://newsapi.org/v2/top-headlines?country={this.props.country}&category={this.props.category}&apiKey=78b4044bed5544fcbc1d33c5a0ff96fb&page=${
-      this.state.page - 1
-    }&pageSize=${this.state.pageSize}`;
-    this.setState({ loader: true });
-    let data = await fetch(url);
-    let parsedData = await data.json();
-    console.log(parsedData);
-    this.setState({
-      articles: parsedData.articles,
-      page: this.state.page - 1,
-      loader: false,
-    });
+    // let url = `https://newsapi.org/v2/top-headlines?country={this.props.country}&category={this.props.category}&apiKey=78b4044bed5544fcbc1d33c5a0ff96fb&page=${
+    //   this.state.page - 1
+    // }&pageSize=${this.state.pageSize}`;
+    // this.setState({ loader: true });
+    // let data = await fetch(url);
+    // let parsedData = await data.json();
+    // console.log(parsedData);
+    // this.setState({
+    //   articles: parsedData.articles,
+    //   page: this.state.page - 1,
+    //   loader: false,
+    // });
+    this.setState({ page: this.state.page - 1 });
+    this.updateNews();
   };
 
   nextClickHandler = async (event) => {
@@ -350,18 +366,20 @@ export class News extends Component {
       console.log(`last page`);
       event.target.classList.add("disabled");
     } else {
-      let url = `https://newsapi.org/v2/top-headlines?country={this.props.country}&category={this.props.category}&apiKey=78b4044bed5544fcbc1d33c5a0ff96fb&page=${
-        this.state.page + 1
-      }&pageSize=${this.state.pageSize}`;
-      this.setState({ loader: true });
-      let data = await fetch(url);
-      let parsedData = await data.json();
-      console.log(parsedData);
-      this.setState({
-        articles: parsedData.articles,
-        page: this.state.page + 1,
-        loader: false,
-      });
+      // let url = `https://newsapi.org/v2/top-headlines?country={this.props.country}&category={this.props.category}&apiKey=78b4044bed5544fcbc1d33c5a0ff96fb&page=${
+      //   this.state.page + 1
+      // }&pageSize=${this.state.pageSize}`;
+      // this.setState({ loader: true });
+      // let data = await fetch(url);
+      // let parsedData = await data.json();
+      // console.log(parsedData);
+      // this.setState({
+      //   articles: parsedData.articles,
+      //   page: this.state.page + 1,
+      //   loader: false,
+      // });
+      this.setState({ page: this.state.page + 1 });
+      this.updateNews();
       if (
         this.state.page + 1 ===
         Math.ceil(this.state.totalResults / this.state.pageSize)

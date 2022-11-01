@@ -6,6 +6,7 @@ import News from "./components/News";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 export default class App extends Component {
+  pageSize = 15;
   render() {
     return (
       <div>
@@ -16,7 +17,7 @@ export default class App extends Component {
             element={
               <News
                 key="general"
-                postPerPage={8}
+                postPerPage={this.pageSize}
                 country="in"
                 category="general"
               />
@@ -27,7 +28,7 @@ export default class App extends Component {
             element={
               <News
                 key="business"
-                postPerPage={8}
+                postPerPage={this.pageSize}
                 country="in"
                 category="business"
               />
@@ -38,7 +39,7 @@ export default class App extends Component {
             element={
               <News
                 key="entertainment"
-                postPerPage={8}
+                postPerPage={this.pageSize}
                 country="in"
                 category="entertainment"
               />
@@ -49,7 +50,7 @@ export default class App extends Component {
             element={
               <News
                 key="general"
-                postPerPage={8}
+                postPerPage={this.pageSize}
                 country="in"
                 category="general"
               />
@@ -60,7 +61,7 @@ export default class App extends Component {
             element={
               <News
                 key="health"
-                postPerPage={8}
+                postPerPage={this.pageSize}
                 country="in"
                 category="health"
               />
@@ -71,7 +72,7 @@ export default class App extends Component {
             element={
               <News
                 key="science"
-                postPerPage={8}
+                postPerPage={this.pageSize}
                 country="in"
                 category="science"
               />
@@ -82,7 +83,7 @@ export default class App extends Component {
             element={
               <News
                 key="sports"
-                postPerPage={8}
+                postPerPage={this.pageSize}
                 country="in"
                 category="sports"
               />
@@ -93,7 +94,7 @@ export default class App extends Component {
             element={
               <News
                 key="technology"
-                postPerPage={8}
+                postPerPage={this.pageSize}
                 country="in"
                 category="technology"
               />
