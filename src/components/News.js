@@ -290,6 +290,10 @@ export class News extends Component {
     category: PropTypes.string,
   };
 
+  capitalizeString = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
   constructor(props) {
     super(props);
     console.log(`Constructor from news component`);
@@ -301,6 +305,9 @@ export class News extends Component {
       pageSize: this.props.postPerPage,
       // category: this.props.category,
     };
+    document.title = `${this.capitalizeString(
+      this.props.category
+    )} - NewsMonkey`;
   }
 
   async updateNews() {
@@ -395,7 +402,9 @@ export class News extends Component {
 
     return (
       <div className="container my-3">
-        <h2 className="text-center">News Monkey App 🐒</h2>
+        <h2 className="text-center">
+          News Monkey App 🐒 {this.props.category} headline
+        </h2>
         {this.state.loader && <Loader></Loader>}
         <div className="row my-3">
           {!this.state.loader &&
